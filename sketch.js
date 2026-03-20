@@ -25,7 +25,7 @@ let debugMode = false;
 let moonGravity = false;
 
 const NORMAL_GRAVITY = 10;
-const MOON_GRAVITY = 1.6;
+const MOON_GRAVITY = 4;
 
 let playerAnis = {
   idle: { row: 0, frames: 4, frameDelay: 10 },
