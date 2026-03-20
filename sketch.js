@@ -20,6 +20,13 @@ let playerImg, bgImg;
 let jumpSfx, musicSfx;
 let musicStarted = false;
 
+// --- DEBUG --- created by GenAI
+let debugMode = false;
+let moonGravity = false;
+
+const NORMAL_GRAVITY = 10;
+const MOON_GRAVITY = 1.6;
+
 let playerAnis = {
   idle: { row: 0, frames: 4, frameDelay: 10 },
   run: { row: 1, frames: 4, frameDelay: 3 },
@@ -86,7 +93,7 @@ function setup() {
   // needed to correct an visual artifacts from attempted antialiasing
   allSprites.pixelPerfect = true;
 
-  world.gravity.y = GRAVITY;
+  world.gravity.y = NORMAL_GRAVITY; // created by GenAI
 
   // Try to start background music immediately.
   if (musicSfx) musicSfx.setLoop(true);
@@ -152,8 +159,20 @@ function startMusicIfNeeded() {
   }
 }
 
+// edited by GenAI
 function keyPressed() {
   startMusicIfNeeded();
+
+  // --- DEBUG TOGGLE ---
+  if (key === "[") {
+    debugMode = !debugMode;
+  }
+
+  // --- MOON GRAVITY TOGGLE ---
+  if (key === "g" || key === "G") {
+    moonGravity = !moonGravity;
+    world.gravity.y = moonGravity ? MOON_GRAVITY : NORMAL_GRAVITY;
+  }
 }
 
 function mousePressed() {
@@ -221,4 +240,26 @@ function draw() {
 
   // --- KEEP IN VIEW ---
   player.pos.x = constrain(player.pos.x, FRAME_W / 2, VIEWW - FRAME_W / 2);
+
+  // Created by GenAI
+  if (debugMode) {
+    camera.off();
+
+    // Background panel
+    fill(0, 150);
+    noStroke();
+    rect(5, 5, 140, 60);
+
+    // Text
+    fill(255);
+    textSize(10);
+    textAlign(LEFT, TOP);
+
+    text("DEBUG MENU", 10, 10);
+    text("FPS: " + Math.round(frameRate()), 10, 22);
+    text("Gravity: " + (moonGravity ? "MOON" : "NORMAL"), 10, 34);
+    text("Press G: Toggle Gravity", 10, 46);
+
+    camera.on();
+  }
 }
